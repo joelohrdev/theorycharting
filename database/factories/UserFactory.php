@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Role;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
@@ -27,6 +28,8 @@ class UserFactory extends Factory
             'email' => fake()->unique()->safeEmail(),
             'email_verified_at' => now(),
             'password' => static::$password ??= 'password',
+            'role' => Role::Student,
+            'teacher_id' => null,
             'remember_token' => Str::random(10),
             'two_factor_secret' => Str::random(10),
             'two_factor_recovery_codes' => Str::random(10),
@@ -53,6 +56,50 @@ class UserFactory extends Factory
             'two_factor_secret' => null,
             'two_factor_recovery_codes' => null,
             'two_factor_confirmed_at' => null,
+        ]);
+    }
+
+    /**
+     * Indicate that the user is a teacher.
+     */
+    public function teacher(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'role' => Role::Teacher,
+            'teacher_id' => null,
+        ]);
+    }
+
+    /**
+     * Indicate that the user is a student.
+     */
+    public function student(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'role' => Role::Student,
+        ]);
+    }
+
+    /**
+     * Assign a teacher to this student.
+     */
+    public function forTeacher(int|\App\Models\User $teacher): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'role' => Role::Student,
+            'teacher_id' => $teacher instanceof \App\Models\User ? $teacher->id : $teacher,
+        ]);
+    }
+
+    /**
+     * Indicate that the user is an admin with no role.
+     */
+    public function admin(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'is_admin' => true,
+            'role' => null,
+            'teacher_id' => null,
         ]);
     }
 }

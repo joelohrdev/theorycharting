@@ -2,7 +2,10 @@
 
 namespace App\Models;
 
+use App\Role;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Str;
@@ -39,6 +42,7 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
             'is_admin' => 'boolean',
+            'role' => Role::class,
             'remember_token' => 'string',
             'created_at' => 'datetime',
             'updated_at' => 'datetime',
@@ -46,6 +50,38 @@ class User extends Authenticatable
             'two_factor_recovery_codes' => 'string',
             'two_factor_expires_at' => 'datetime',
         ];
+    }
+
+    /**
+     * Get the teacher that the student belongs to
+     */
+    public function teacher(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'teacher_id');
+    }
+
+    /**
+     * Get all students that belong to this teacher
+     */
+    public function students(): HasMany
+    {
+        return $this->hasMany(User::class, 'teacher_id');
+    }
+
+    /**
+     * Check if user is a teacher
+     */
+    public function isTeacher(): bool
+    {
+        return $this->role === Role::Teacher;
+    }
+
+    /**
+     * Check if user is a student
+     */
+    public function isStudent(): bool
+    {
+        return $this->role === Role::Student;
     }
 
     /**
