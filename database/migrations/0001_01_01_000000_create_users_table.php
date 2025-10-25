@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('role')->nullable()->default('student'); // 'teacher', 'student', or null for admins
             $table->foreignId('teacher_id')->nullable()->constrained('users')->nullOnDelete();
             $table->rememberToken();
+            $table->softDeletes();
             $table->timestamps();
         });
 
