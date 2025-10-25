@@ -35,7 +35,7 @@ class Index extends Component
             ->where('role', 'teacher')
             ->orWhere('is_admin', true)
             ->select(['id', 'name', 'email', 'is_admin', 'role'])
-            ->paginate(5);
+            ->paginate(10);
     }
 
     public function render(): View

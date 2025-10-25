@@ -13,12 +13,23 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        User::factory()->create([
+        // Create admin user
+        User::factory()->admin()->create([
             'name' => 'Joe Lohr',
             'email' => 'emailme@joelohr.com',
             'email_verified_at' => now(),
             'password' => bcrypt('password'),
-            'is_admin' => true,
         ]);
+
+        // Create teachers and students for each teacher
+        $teachers = User::factory()->teacher()->count(5)->create();
+
+        $teachers->each(function ($teacher) {
+            // Create 3-8 students for each teacher
+            User::factory()
+                ->forTeacher($teacher)
+                ->count(rand(3, 8))
+                ->create();
+        });
     }
 }

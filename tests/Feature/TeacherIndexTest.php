@@ -12,7 +12,7 @@ test('it can access teachers if an admin', function () {
     $response->assertOk();
 });
 
-test('it cannot access teachers if an admin', function () {
+test('it cannot access teachers if not an admin', function () {
     $user = User::factory()->create(['is_admin' => false]);
     $response = $this->actingAs($user)->get(route('teacher.index'));
 
