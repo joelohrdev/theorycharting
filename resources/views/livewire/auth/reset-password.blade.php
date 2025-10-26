@@ -1,6 +1,9 @@
 <x-layouts.auth>
     <div class="flex flex-col gap-6">
-        <x-auth-header :title="__('Reset password')" :description="__('Please enter your new password below')" />
+        <x-auth-header
+            :title="__('Set Your Password')"
+            :description="__('Welcome! Please create a password to access your account.')"
+        />
 
         <!-- Session Status -->
         <x-auth-session-status class="text-center" :status="session('status')" />
@@ -18,6 +21,7 @@
                 type="email"
                 required
                 autocomplete="email"
+                readonly
             />
 
             <!-- Password -->
@@ -44,7 +48,7 @@
 
             <div class="flex items-center justify-end">
                 <flux:button type="submit" variant="primary" class="w-full" data-test="reset-password-button">
-                    {{ __('Reset password') }}
+                    {{ __('Set Password & Continue') }}
                 </flux:button>
             </div>
         </form>

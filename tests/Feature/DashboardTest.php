@@ -12,5 +12,17 @@ test('authenticated users can visit the dashboard', function () {
     $this->actingAs($user);
 
     $response = $this->get(route('dashboard'));
-    $response->assertStatus(200);
+    $response
+        ->assertStatus(200)
+        ->assertDontSee('Teachers');
+});
+
+test('admin can see teachers nav link', function (): void {
+   $user = User::factory()->create(['is_admin' => true]);
+
+   $response = $this->actingAs($user)->get(route('dashboard'));
+
+   $response
+       ->assertStatus(200)
+       ->assertSee('Teachers');
 });

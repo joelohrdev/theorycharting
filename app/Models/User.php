@@ -2,7 +2,8 @@
 
 namespace App\Models;
 
-use App\Role;
+use App\enums\Role;
+use App\Notifications\InitialPasswordResetNotification;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -51,6 +52,11 @@ class User extends Authenticatable
             'two_factor_recovery_codes' => 'string',
             'two_factor_expires_at' => 'datetime',
         ];
+    }
+
+    public function sendPasswordResetNotification($token): void
+    {
+        $this->notify(new InitialPasswordResetNotification($token));
     }
 
     /**

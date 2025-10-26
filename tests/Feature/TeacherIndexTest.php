@@ -9,7 +9,9 @@ test('it can access teachers if an admin', function () {
     $user = User::factory()->admin()->create();
     $response = $this->actingAs($user)->get(route('teacher.index'));
 
-    $response->assertOk();
+    $response
+        ->assertOk()
+        ->assertSee('Teachers');
 });
 
 test('it cannot access teachers if not an admin', function () {

@@ -14,7 +14,9 @@
             <flux:navlist variant="outline">
                 <flux:navlist.group class="grid">
                     <flux:navlist.item icon="home" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>{{ __('Dashboard') }}</flux:navlist.item>
+                    @if(auth()->user()->is_admin)
                     <flux:navlist.item icon="user" :href="route('teacher.index')" :current="request()->routeIs('teacher.index')" wire:navigate>{{ __('Teachers') }}</flux:navlist.item>
+                    @endif
                 </flux:navlist.group>
             </flux:navlist>
 
