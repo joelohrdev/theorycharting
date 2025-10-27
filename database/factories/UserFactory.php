@@ -30,7 +30,7 @@ final class UserFactory extends Factory
             'email' => fake()->unique()->safeEmail(),
             'email_verified_at' => now(),
             'password' => self::$password ??= 'password',
-            'role' => Role::Student,
+            'role' => Role::STUDENT,
             'teacher_id' => null,
             'remember_token' => Str::random(10),
             'two_factor_secret' => Str::random(10),
@@ -67,7 +67,7 @@ final class UserFactory extends Factory
     public function teacher(): static
     {
         return $this->state(fn (array $attributes) => [
-            'role' => Role::Teacher,
+            'role' => Role::TEACHER,
             'teacher_id' => null,
         ]);
     }
@@ -78,7 +78,7 @@ final class UserFactory extends Factory
     public function student(): static
     {
         return $this->state(fn (array $attributes) => [
-            'role' => Role::Student,
+            'role' => Role::STUDENT,
         ]);
     }
 
@@ -88,7 +88,7 @@ final class UserFactory extends Factory
     public function forTeacher(int|\App\Models\User $teacher): static
     {
         return $this->state(fn (array $attributes) => [
-            'role' => Role::Student,
+            'role' => Role::STUDENT,
             'teacher_id' => $teacher instanceof \App\Models\User ? $teacher->id : $teacher,
         ]);
     }
