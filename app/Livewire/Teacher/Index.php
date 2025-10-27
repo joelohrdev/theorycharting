@@ -34,8 +34,7 @@ final class Index extends Component
         return User::query()
             ->tap(fn ($query) => $this->sortBy ? $query->orderBy($this->sortBy, $this->sortDirection) : $query)
             ->where('role', 'teacher')
-            ->orWhere('is_admin', true)
-            ->select(['id', 'name', 'email', 'email_verified_at', 'is_admin', 'role'])
+            ->select(['id', 'name', 'email', 'is_admin', 'role'])
             ->orderBy('name')
             ->paginate(10);
     }

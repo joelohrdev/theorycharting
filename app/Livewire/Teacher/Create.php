@@ -15,9 +15,6 @@ use Str;
 
 final class Create extends Component
 {
-    #[Validate('required', 'string', 'max:255')]
-    public string $name = '';
-
     #[Validate('required', 'email', 'unique:users,email')]
     public string $email = '';
 

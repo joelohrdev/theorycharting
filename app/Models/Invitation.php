@@ -28,7 +28,7 @@ final class Invitation extends Model
         'updated_at' => 'datetime',
     ];
 
-    public function generateToken(): string
+    public static function generateToken(): string
     {
         return Str::random(64);
     }
