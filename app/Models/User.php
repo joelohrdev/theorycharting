@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
 use App\enums\Role;
@@ -13,10 +15,10 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Str;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 
-class User extends Authenticatable
+final class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use SoftDeletes, HasFactory, Notifiable, TwoFactorAuthenticatable;
+    use HasFactory, Notifiable, SoftDeletes, TwoFactorAuthenticatable;
 
     /**
      * The attributes that should be hidden for serialization.
@@ -30,30 +32,6 @@ class User extends Authenticatable
         'remember_token',
     ];
 
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
-    protected function casts(): array
-    {
-        return [
-            'id' => 'integer',
-            'name' => 'string',
-            'email' => 'string',
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-            'is_admin' => 'boolean',
-            'role' => Role::class,
-            'remember_token' => 'string',
-            'created_at' => 'datetime',
-            'updated_at' => 'datetime',
-            'two_factor_secret' => 'string',
-            'two_factor_recovery_codes' => 'string',
-            'two_factor_expires_at' => 'datetime',
-        ];
-    }
-
     public function sendPasswordResetNotification($token): void
     {
         $this->notify(new InitialPasswordResetNotification($token));
@@ -64,7 +42,7 @@ class User extends Authenticatable
      */
     public function teacher(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'teacher_id');
+        return $this->belongsTo(self::class, 'teacher_id');
     }
 
     /**
@@ -72,7 +50,7 @@ class User extends Authenticatable
      */
     public function students(): HasMany
     {
-        return $this->hasMany(User::class, 'teacher_id');
+        return $this->hasMany(self::class, 'teacher_id');
     }
 
     /**
@@ -101,5 +79,29 @@ class User extends Authenticatable
             ->take(2)
             ->map(fn ($word) => Str::substr($word, 0, 1))
             ->implode('');
+    }
+
+    /**
+     * Get the attributes that should be cast.
+     *
+     * @return array<string, string>
+     */
+    protected function casts(): array
+    {
+        return [
+            'id' => 'integer',
+            'name' => 'string',
+            'email' => 'string',
+            'email_verified_at' => 'datetime',
+            'password' => 'hashed',
+            'is_admin' => 'boolean',
+            'role' => Role::class,
+            'remember_token' => 'string',
+            'created_at' => 'datetime',
+            'updated_at' => 'datetime',
+            'two_factor_secret' => 'string',
+            'two_factor_recovery_codes' => 'string',
+            'two_factor_expires_at' => 'datetime',
+        ];
     }
 }

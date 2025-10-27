@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Models\User;
 
 test('guests are redirected to the login page', function () {
@@ -18,11 +20,11 @@ test('authenticated users can visit the dashboard', function () {
 });
 
 test('admin can see teachers nav link', function (): void {
-   $user = User::factory()->create(['is_admin' => true]);
+    $user = User::factory()->create(['is_admin' => true]);
 
-   $response = $this->actingAs($user)->get(route('dashboard'));
+    $response = $this->actingAs($user)->get(route('dashboard'));
 
-   $response
-       ->assertStatus(200)
-       ->assertSee('Teachers');
+    $response
+        ->assertStatus(200)
+        ->assertSee('Teachers');
 });

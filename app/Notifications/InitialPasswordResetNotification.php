@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Notifications;
 
 use Illuminate\Bus\Queueable;
@@ -7,13 +9,13 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class InitialPasswordResetNotification extends Notification implements ShouldQueue
+final class InitialPasswordResetNotification extends Notification implements ShouldQueue
 {
     use Queueable;
 
     public function __construct(
         public string $token,
-    ){}
+    ) {}
 
     public function via($notifiable): array
     {
@@ -33,7 +35,7 @@ class InitialPasswordResetNotification extends Notification implements ShouldQue
             ->line('You have been invited to join Theory Chart as a teacher.')
             ->line('Click the button below to set your password and activate your account.')
             ->action('Set Password', $url)
-            ->line('This password reset link will expire in ' . config('auth.passwords.'.config('auth.defaults.passwords').'.expire') . ' minutes.')
+            ->line('This password reset link will expire in '.config('auth.passwords.'.config('auth.defaults.passwords').'.expire').' minutes.')
             ->line('If you did not expect to receive this invitation, no further action is required.')
             ->salutation('Thanks');
     }

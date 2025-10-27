@@ -13,10 +13,11 @@ use Livewire\Attributes\Validate;
 use Livewire\Component;
 use Str;
 
-class Create extends Component
+final class Create extends Component
 {
     #[Validate('required', 'string', 'max:255')]
     public string $name = '';
+
     #[Validate('required', 'email', 'unique:users,email')]
     public string $email = '';
 

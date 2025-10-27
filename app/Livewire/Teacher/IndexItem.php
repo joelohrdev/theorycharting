@@ -8,7 +8,7 @@ use App\Models\User;
 use Illuminate\View\View;
 use Livewire\Component;
 
-class IndexItem extends Component
+final class IndexItem extends Component
 {
     public User $user;
 
