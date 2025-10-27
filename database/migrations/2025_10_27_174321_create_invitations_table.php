@@ -18,7 +18,7 @@ return new class extends Migration
             $table->id();
             $table->string('email');
             $table->string('token')->unique();
-            $table->json('role')->default(Role::STUDENT);
+            $table->string('role')->default(Role::STUDENT->value);
             $table->foreignId('invited_by')->constrained('users')->cascadeOnDelete();
             $table->foreignId('teacher_id')->nullable()->constrained('users')->nullOnDelete();
             $table->timestamp('expires_at');
