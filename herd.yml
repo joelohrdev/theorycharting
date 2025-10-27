@@ -1,0 +1,5 @@
+integrations:
+  forge:
+    chartingtheory.com:
+      server-id: 969442
+      site-id: 2907441

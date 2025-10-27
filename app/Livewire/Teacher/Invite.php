@@ -15,7 +15,7 @@ use Livewire\Component;
 
 final class Invite extends Component
 {
-    #[Rule(['string', 'email', 'unique:users,email', 'unique:invitations,eamil'])]
+    #[Rule(['string', 'email', 'unique:users,email', 'unique:invitations,email'])]
     public string $email = '';
 
     public bool $isAdmin = false;
