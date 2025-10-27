@@ -1,11 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Console\Commands;
 
 use App\Models\Invitation;
 use Illuminate\Console\Command;
 
-class ClearInvites extends Command
+final class ClearInvites extends Command
 {
     /**
      * The name and signature of the console command.
@@ -30,12 +32,14 @@ class ClearInvites extends Command
 
         if ($count === 0) {
             $this->info('No invitations to clear.');
+
             return self::SUCCESS;
         }
 
         if (! $this->option('force')) {
             if (! $this->confirm("Are you sure you want to delete {$count} invitation(s)?")) {
                 $this->info('Operation cancelled.');
+
                 return self::SUCCESS;
             }
         }

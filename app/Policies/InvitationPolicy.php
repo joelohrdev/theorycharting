@@ -11,6 +11,11 @@ final class InvitationPolicy
 {
     use HandlesAuthorization;
 
+    public function viewAny(User $user): bool
+    {
+        return $user->is_admin === true;
+    }
+
     public function create(User $user): bool
     {
         return $user->is_admin === true;

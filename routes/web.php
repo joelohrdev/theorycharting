@@ -15,6 +15,7 @@ Route::get('/invitation/{token}', AcceptInvitationController::class)->name('invi
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::view('dashboard', 'dashboard')->name('dashboard');
     Route::view('teachers', 'teacher.index')->middleware('can:viewAllTeachers')->name('teacher.index');
+    Route::view('teachers/invites', 'teacher.invites')->middleware('can:viewAllTeachers')->name('teacher.invites');
 });
 
 Route::middleware(['auth'])->group(function () {
