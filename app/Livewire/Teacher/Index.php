@@ -14,7 +14,7 @@ final class Index extends Component
 {
     use WithPagination;
 
-    public $sortBy = 'date';
+    public $sortBy = 'name';
 
     public $sortDirection = 'desc';
 
