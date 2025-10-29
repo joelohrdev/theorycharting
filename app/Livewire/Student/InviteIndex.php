@@ -14,7 +14,7 @@ final class InviteIndex extends Component
 {
     use WithPagination;
 
-    public string $sortBy = 'name';
+    public string $sortBy = 'email';
 
     public string $sortDirection = 'desc';
 
