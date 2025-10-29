@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Providers;
 
-use App\Policies\TeacherPolicy;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
@@ -26,7 +26,8 @@ final class AppServiceProvider extends ServiceProvider
     {
         $this->bootModelsDefaults();
 
-        Gate::define('viewAllTeachers', [TeacherPolicy::class, 'viewAll']);
+        Gate::define('viewTeacherPages', fn (User $user) => $user->is_admin);
+        Gate::define('viewStudentPages', fn (User $user) => $user->is_admin || $user->isTeacher());
     }
 
     private function bootModelsDefaults(): void

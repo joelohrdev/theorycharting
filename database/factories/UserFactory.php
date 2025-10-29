@@ -67,6 +67,7 @@ final class UserFactory extends Factory
     public function teacher(): static
     {
         return $this->state(fn (array $attributes) => [
+            'is_admin' => false,
             'role' => Role::TEACHER,
             'teacher_id' => null,
         ]);
@@ -78,6 +79,7 @@ final class UserFactory extends Factory
     public function student(): static
     {
         return $this->state(fn (array $attributes) => [
+            'is_admin' => false,
             'role' => Role::STUDENT,
         ]);
     }

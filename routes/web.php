@@ -14,8 +14,11 @@ Route::get('/invitation/{token}', AcceptInvitationController::class)->name('invi
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::view('dashboard', 'dashboard')->name('dashboard');
-    Route::view('teachers', 'teacher.index')->middleware('can:viewAllTeachers')->name('teacher.index');
-    Route::view('teachers/invites', 'teacher.invites')->middleware('can:viewAllTeachers')->name('teacher.invites');
+    Route::view('teachers', 'teacher.index')->middleware('can:viewTeacherPages')->name('teacher.index');
+    Route::view('teachers/invites', 'teacher.invites')->middleware('can:viewTeacherPages')->name('teacher.invites');
+    Route::view('students', 'student.index')->middleware('can:viewStudentPages')->name('student.index');
+    Route::view('students/invites', 'student.invites')->middleware('can:viewStudentPages')->name('student.invites');
+    Route::view('students/deleted', 'student.deleted')->middleware('can:viewStudentPages')->name('student.deleted');
 });
 
 Route::middleware(['auth'])->group(function () {

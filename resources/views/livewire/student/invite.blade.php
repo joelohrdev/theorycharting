@@ -1,12 +1,12 @@
 <div>
-    <flux:modal.trigger name="invite-teacher">
-        <flux:button size="sm" variant="primary">Invite Teacher</flux:button>
+    <flux:modal.trigger name="invite-student">
+        <flux:button size="sm" variant="primary">Invite Student</flux:button>
     </flux:modal.trigger>
 
-    <flux:modal name="invite-teacher" class="md:w-96">
+    <flux:modal name="invite-student" class="md:w-96">
         <form wire:submit.prevent="sendInvite" class="space-y-6">
             <div>
-                <flux:heading size="lg">Invite Teacher</flux:heading>
+                <flux:heading size="lg">Invite Student</flux:heading>
             </div>
 
             <flux:field>

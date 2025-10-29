@@ -58,7 +58,7 @@ final class User extends Authenticatable
      */
     public function isTeacher(): bool
     {
-        return $this->role === Role::Teacher;
+        return $this->role === Role::TEACHER;
     }
 
     /**
@@ -66,7 +66,15 @@ final class User extends Authenticatable
      */
     public function isStudent(): bool
     {
-        return $this->role === Role::Student;
+        return $this->role === Role::STUDENT;
+    }
+
+    /**
+     * Get all invitations that belong to this teacher
+     */
+    public function invitations(): HasMany
+    {
+        return $this->hasMany(Invitation::class, 'teacher_id');
     }
 
     /**

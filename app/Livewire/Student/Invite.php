@@ -2,39 +2,37 @@
 
 declare(strict_types=1);
 
-namespace App\Livewire\Teacher;
+namespace App\Livewire\Student;
 
-use App\Livewire\Forms\TeacherForm;
+use App\Livewire\Forms\StudentForm;
 use App\Mail\InvitationMail;
 use App\Models\Invitation;
-use Flux;
+use Flux\Flux;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\View\View;
 use Livewire\Component;
 
 final class Invite extends Component
 {
-    public TeacherForm $form;
+    public StudentForm $form;
 
     public function sendInvite(): void
     {
-        $this->authorize('create-teacher', Invitation::class);
-
-        $this->validate();
+        $this->authorize('create-student', Invitation::class);
 
         $invitation = $this->form->save();
 
         Mail::to($invitation->email)->send(new InvitationMail($invitation));
 
-        Flux::toast(variant: 'success', position: 'top center', text: 'Invitation sent successfully');
-
-        Flux::modal('invite-teacher')->close();
+        Flux::toast(text: 'Invitation sent successfully', variant: 'success', position: 'top center');
 
         $this->form->reset();
+
+        $this->dispatch('invite-created');
     }
 
     public function render(): View
     {
-        return view('livewire.teacher.invite');
+        return view('livewire.student.invite');
     }
 }

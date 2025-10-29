@@ -17,6 +17,9 @@
                     @if(auth()->user()->is_admin)
                     <flux:navlist.item icon="user" :href="route('teacher.index')" :current="request()->routeIs('teacher.index')" wire:navigate>{{ __('Teachers') }}</flux:navlist.item>
                     @endif
+                    @if(auth()->user()->is_admin || auth()->user()->isTeacher())
+                        <flux:navlist.item icon="users" :href="route('student.index')" :current="request()->routeIs('student.*')" wire:navigate>{{ __('Students') }}</flux:navlist.item>
+                    @endif
                 </flux:navlist.group>
             </flux:navlist>
 
