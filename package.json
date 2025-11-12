@@ -1,4 +1,5 @@
 {
+    "name": "theory-chart",
     "private": true,
     "type": "module",
     "scripts": {
