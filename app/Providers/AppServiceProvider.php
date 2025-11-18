@@ -28,6 +28,7 @@ final class AppServiceProvider extends ServiceProvider
 
         Gate::define('viewTeacherPages', fn (User $user) => $user->is_admin);
         Gate::define('viewStudentPages', fn (User $user) => $user->is_admin || $user->isTeacher());
+        Gate::define('importPatients', fn (User $user) => $user->is_admin || $user->isTeacher());
     }
 
     private function bootModelsDefaults(): void

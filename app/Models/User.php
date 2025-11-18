@@ -78,6 +78,14 @@ final class User extends Authenticatable
     }
 
     /**
+     * @return HasMany<Patient, $this>
+     */
+    public function patients(): HasMany
+    {
+        return $this->hasMany(Patient::class);
+    }
+
+    /**
      * Get the user's initials
      */
     public function initials(): string

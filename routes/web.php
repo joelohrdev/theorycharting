@@ -19,6 +19,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::view('students', 'student.index')->middleware('can:viewStudentPages')->name('student.index');
     Route::view('students/invites', 'student.invites')->middleware('can:viewStudentPages')->name('student.invites');
     Route::view('students/deleted', 'student.deleted')->middleware('can:viewStudentPages')->name('student.deleted');
+
+    Route::view('patients', 'patient.index')->name('patient.index');
 });
 
 Route::middleware(['auth'])->group(function () {

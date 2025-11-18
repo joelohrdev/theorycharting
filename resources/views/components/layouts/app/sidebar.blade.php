@@ -20,6 +20,9 @@
                     @if(auth()->user()->is_admin || auth()->user()->isTeacher())
                         <flux:navlist.item icon="users" :href="route('student.index')" :current="request()->routeIs('student.*')" wire:navigate>{{ __('Students') }}</flux:navlist.item>
                     @endif
+                    @if(auth()->user()->is_admin || auth()->user()->isTeacher())
+                        <flux:navlist.item icon="users" :href="route('patient.index')" :current="request()->routeIs('patient.*')" wire:navigate>{{ __('Patients') }}</flux:navlist.item>
+                    @endif
                 </flux:navlist.group>
             </flux:navlist>
 
