@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Livewire\Patient;
 
 use App\Models\Patient;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\View\View;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\On;
@@ -47,7 +48,7 @@ final class Index extends Component
         return view('livewire.patient.index');
     }
 
-    private function getPatientsQuery()
+    private function getPatientsQuery(): Builder
     {
         if (auth()->user()->is_admin) {
             return Patient::query();

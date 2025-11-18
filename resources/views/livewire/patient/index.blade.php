@@ -25,7 +25,11 @@
             <flux:table.rows>
                 @forelse($this->patients() as $patient)
                     <flux:table.row :key="$patient->id">
-                        <flux:table.cell sticky class="bg-white">{{ $patient->name }}</flux:table.cell>
+                        <flux:table.cell sticky class="bg-white">
+                            <a wire:navigate href="{{ route('patient.show', $patient) }}" class="hover:underline">
+                                {{ $patient->name }}
+                            </a>
+                        </flux:table.cell>
                         <flux:table.cell>{{ $patient->gender }}</flux:table.cell>
                         <flux:table.cell>{{ $patient->birth_date->format('m/d/Y') }}</flux:table.cell>
                         <flux:table.cell>{{ $patient->mrn }}</flux:table.cell>
@@ -39,7 +43,9 @@
                         <flux:table.cell>{{ $patient->status }}</flux:table.cell>
                         <flux:table.cell>{{ $patient->isolation }}</flux:table.cell>
                         <flux:table.cell>{{ $patient->unit }}</flux:table.cell>
-                        <flux:table.cell><flux:button size="xs" variant="primary" color="yellow">View</flux:button></flux:table.cell>
+                        <flux:table.cell>
+                            <flux:button wire:navigate :href="route('patient.show', $patient)" size="xs" variant="primary" color="yellow">View</flux:button>
+                        </flux:table.cell>
                     </flux:table.row>
                 @empty
                     <flux:table.row>

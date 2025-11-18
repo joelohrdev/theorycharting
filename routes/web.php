@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Http\Controllers\AcceptInvitationController;
+use App\Http\Controllers\PatientController;
 use Illuminate\Support\Facades\Route;
 use Laravel\Fortify\Features;
 use Livewire\Volt\Volt;
@@ -21,6 +22,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::view('students/deleted', 'student.deleted')->middleware('can:viewStudentPages')->name('student.deleted');
 
     Route::view('patients', 'patient.index')->name('patient.index');
+    Route::get('patients/{patient}', [PatientController::class, 'show'])->name('patient.show');
 });
 
 Route::middleware(['auth'])->group(function () {
