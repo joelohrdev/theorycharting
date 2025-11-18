@@ -54,7 +54,7 @@ final class Index extends Component
         }
 
         if (auth()->user()->isTeacher()) {
-            return Patient::where('teacher_id', auth()->user()->id);
+            return Patient::where('user_id', auth()->user()->id);
         }
 
         return Patient::query()
