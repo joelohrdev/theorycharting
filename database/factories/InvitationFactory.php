@@ -21,7 +21,7 @@ final class InvitationFactory extends Factory
         return [
             'email' => fake()->unique()->safeEmail(),
             'token' => \App\Models\Invitation::generateToken(),
-            'role' => \App\enums\Role::STUDENT,
+            'role' => \App\Enums\Role::STUDENT,
             'invited_by' => \App\Models\User::factory()->teacher(),
             'teacher_id' => fn (array $attributes) => $attributes['invited_by'],
             'expires_at' => now()->addDays(7),

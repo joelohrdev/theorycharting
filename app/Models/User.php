@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use App\enums\Role;
+use App\Enums\Role;
 use App\Notifications\InitialPasswordResetNotification;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -83,6 +83,14 @@ final class User extends Authenticatable
     public function patients(): HasMany
     {
         return $this->hasMany(Patient::class);
+    }
+
+    /**
+     * @return HasMany<Vital, $this>
+     */
+    public function vitals(): HasMany
+    {
+        return $this->hasMany(Vital::class);
     }
 
     /**

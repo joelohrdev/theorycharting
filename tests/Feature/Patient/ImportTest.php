@@ -10,7 +10,7 @@ use Livewire\Livewire;
 
 describe('Patient\Import component rendering', function () {
     test('component renders successfully for authenticated user', function () {
-        $user = User::factory()->create();
+        $user = User::factory()->teacher()->create();
 
         Livewire::actingAs($user)
             ->test(Import::class)
@@ -18,7 +18,7 @@ describe('Patient\Import component rendering', function () {
     });
 
     test('component displays import button', function () {
-        $user = User::factory()->create();
+        $user = User::factory()->teacher()->create();
 
         Livewire::actingAs($user)
             ->test(Import::class)
@@ -26,7 +26,7 @@ describe('Patient\Import component rendering', function () {
     });
 
     test('component displays required CSV columns information', function () {
-        $user = User::factory()->create();
+        $user = User::factory()->teacher()->create();
 
         Livewire::actingAs($user)
             ->test(Import::class)
@@ -38,7 +38,7 @@ describe('Patient\Import component rendering', function () {
 
 describe('Patient\Import component CSV import', function () {
     test('component can import valid CSV file', function () {
-        $user = User::factory()->create();
+        $user = User::factory()->teacher()->create();
 
         $csvContent = "name,gender,birth_date,mrn,room,admission_date,attending_md,diagnosis,diet_order,activity_level,procedure,status,isolation,unit\n";
         $csvContent .= "John Doe,Male,1990-01-15,MRN001,101,2025-11-01,Dr. Smith,Diabetes,Regular,Ambulatory,Surgery,Active,None,ICU\n";
@@ -59,7 +59,7 @@ describe('Patient\Import component CSV import', function () {
     });
 
     test('imported patient has correct attributes', function () {
-        $user = User::factory()->create();
+        $user = User::factory()->teacher()->create();
 
         $csvContent = "name,gender,birth_date,mrn,room,admission_date,attending_md,diagnosis,diet_order,activity_level,procedure,status,isolation,unit\n";
         $csvContent .= 'John Doe,Male,1990-01-15,MRN001,101,2025-11-01,Dr. Smith,Diabetes,Regular,Ambulatory,Surgery,Active,None,ICU';
@@ -86,7 +86,7 @@ describe('Patient\Import component CSV import', function () {
     });
 
     test('component dispatches close-modal event after successful import', function () {
-        $user = User::factory()->create();
+        $user = User::factory()->teacher()->create();
 
         $csvContent = "name,gender,birth_date,mrn,room,admission_date,attending_md,diagnosis,diet_order,activity_level,procedure,status,isolation,unit\n";
         $csvContent .= 'John Doe,Male,1990-01-15,MRN001,101,2025-11-01,Dr. Smith,Diabetes,Regular,Ambulatory,Surgery,Active,None,ICU';
@@ -101,7 +101,7 @@ describe('Patient\Import component CSV import', function () {
     });
 
     test('component resets file after successful import', function () {
-        $user = User::factory()->create();
+        $user = User::factory()->teacher()->create();
 
         $csvContent = "name,gender,birth_date,mrn,room,admission_date,attending_md,diagnosis,diet_order,activity_level,procedure,status,isolation,unit\n";
         $csvContent .= 'John Doe,Male,1990-01-15,MRN001,101,2025-11-01,Dr. Smith,Diabetes,Regular,Ambulatory,Surgery,Active,None,ICU';
@@ -118,7 +118,7 @@ describe('Patient\Import component CSV import', function () {
 
 describe('Patient\Import component validation', function () {
     test('component requires CSV file', function () {
-        $user = User::factory()->create();
+        $user = User::factory()->teacher()->create();
 
         Livewire::actingAs($user)
             ->test(Import::class)
@@ -130,7 +130,7 @@ describe('Patient\Import component validation', function () {
     });
 
     test('component requires valid file type', function () {
-        $user = User::factory()->create();
+        $user = User::factory()->teacher()->create();
 
         $file = UploadedFile::fake()->create('document.pdf', 100, 'application/pdf');
 
@@ -144,7 +144,7 @@ describe('Patient\Import component validation', function () {
     });
 
     test('component validates required CSV fields', function () {
-        $user = User::factory()->create();
+        $user = User::factory()->teacher()->create();
 
         $csvContent = "name,gender,birth_date\n";
         $csvContent .= 'John Doe,Male,1990-01-15';
@@ -160,7 +160,7 @@ describe('Patient\Import component validation', function () {
     });
 
     test('component validates date format in birth_date', function () {
-        $user = User::factory()->create();
+        $user = User::factory()->teacher()->create();
 
         $csvContent = "name,gender,birth_date,mrn,room,admission_date,attending_md,diagnosis,diet_order,activity_level,procedure,status,isolation,unit\n";
         $csvContent .= 'John Doe,Male,invalid-date,MRN001,101,2025-11-01,Dr. Smith,Diabetes,Regular,Ambulatory,Surgery,Active,None,ICU';
@@ -176,7 +176,7 @@ describe('Patient\Import component validation', function () {
     });
 
     test('component shows error message on validation failure', function () {
-        $user = User::factory()->create();
+        $user = User::factory()->teacher()->create();
 
         $csvContent = "name,gender,birth_date,mrn,room,admission_date,attending_md,diagnosis,diet_order,activity_level,procedure,status,isolation,unit\n";
         $csvContent .= ',Male,1990-01-15,MRN001,101,2025-11-01,Dr. Smith,Diabetes,Regular,Ambulatory,Surgery,Active,None,ICU';
@@ -198,7 +198,7 @@ describe('Patient\Import component authorization', function () {
     });
 
     test('authenticated user can import patients', function () {
-        $user = User::factory()->create();
+        $user = User::factory()->teacher()->create();
 
         $csvContent = "name,gender,birth_date,mrn,room,admission_date,attending_md,diagnosis,diet_order,activity_level,procedure,status,isolation,unit\n";
         $csvContent .= 'John Doe,Male,1990-01-15,MRN001,101,2025-11-01,Dr. Smith,Diabetes,Regular,Ambulatory,Surgery,Active,None,ICU';
@@ -215,8 +215,8 @@ describe('Patient\Import component authorization', function () {
     });
 
     test('imported patients belong to authenticated user', function () {
-        $user1 = User::factory()->create();
-        $user2 = User::factory()->create();
+        $user1 = User::factory()->teacher()->create();
+        $user2 = User::factory()->teacher()->create();
 
         $csvContent = "name,gender,birth_date,mrn,room,admission_date,attending_md,diagnosis,diet_order,activity_level,procedure,status,isolation,unit\n";
         $csvContent .= 'John Doe,Male,1990-01-15,MRN001,101,2025-11-01,Dr. Smith,Diabetes,Regular,Ambulatory,Surgery,Active,None,ICU';

@@ -32,11 +32,19 @@ final class Import extends Component
         if (! auth()->check()) {
             abort(403);
         }
+
+        if (auth()->user()->isStudent()) {
+            abort(403);
+        }
     }
 
     public function import(): void
     {
         if (! auth()->check()) {
+            abort(403);
+        }
+
+        if (auth()->user()->isStudent()) {
             abort(403);
         }
 

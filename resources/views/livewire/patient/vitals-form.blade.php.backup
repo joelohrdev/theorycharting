@@ -1,0 +1,340 @@
+<div x-data="{
+    vitals: @js($this->vitals),
+    showNewColumn: false,
+    init() {
+        // Listen for new vitals being added
+        Livewire.on('vital-added', (event) => {
+            this.vitals.push(event.vital);
+            this.showNewColumn = false;
+        });
+    },
+    addColumn() {
+        this.showNewColumn = true;
+    },
+    cancelNewColumn() {
+        this.showNewColumn = false;
+    },
+    formatTime(datetime) {
+        if (!datetime) return '';
+        const date = new Date(datetime);
+        const hours = String(date.getHours()).padStart(2, '0');
+        const minutes = String(date.getMinutes()).padStart(2, '0');
+        return hours + minutes;
+    }
+}" @vitals-loaded.window="vitals = $event.detail.vitals">
+<table class="min-w-full border-collapse text-sm">
+    <thead>
+    <tr class="border-b border-gray-200 dark:border-gray-700">
+        <th class="text-left py-3 px-4 bg-gray-50 dark:bg-gray-900 sticky left-0 z-20 min-w-[180px] shadow-[2px_0_5px_-2px_rgba(0,0,0,0.1)] dark:shadow-[2px_0_5px_-2px_rgba(0,0,0,0.3)]">
+            <span class="font-semibold text-gray-900 dark:text-gray-100">Vital Signs</span>
+        </th>
+        <!-- Existing saved vitals -->
+        <template x-for="(vital, index) in vitals" :key="vital.id">
+            <th class="text-center py-3 px-2 bg-gray-50 dark:bg-gray-900 min-w-[120px]">
+                <span class="font-semibold text-gray-900 dark:text-gray-100" x-text="formatTime(vital.created_at)"></span>
+            </th>
+        </template>
+        <!-- New column input -->
+        <template x-if="showNewColumn">
+            <th class="text-center py-3 px-2 bg-gray-50 dark:bg-gray-900 min-w-[120px]">
+                <span class="font-semibold text-gray-900 dark:text-gray-100">New</span>
+            </th>
+        </template>
+        <th class="py-3 px-4 bg-gray-50 dark:bg-gray-900 sticky right-0 z-20">
+            <template x-if="!showNewColumn">
+                <flux:button
+                    @click="addColumn()"
+                    variant="primary"
+                    size="sm"
+                    icon="plus"
+                    color="yellow"
+                >Add Column</flux:button>
+            </template>
+            <template x-if="showNewColumn">
+                <flux:button
+                    @click="cancelNewColumn()"
+                    variant="ghost"
+                    size="sm"
+                >Cancel</flux:button>
+            </template>
+        </th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr class="border-b border-gray-100 dark:border-gray-800">
+        <td class="py-2 px-4 font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-950 sticky left-0 z-10 shadow-[2px_0_5px_-2px_rgba(0,0,0,0.1)] dark:shadow-[2px_0_5px_-2px_rgba(0,0,0,0.3)]">Temperature</td>
+        <!-- Existing vitals (read-only) -->
+        <template x-for="(vital, index) in vitals" :key="'temp-' + vital.id">
+            <td class="py-2 px-2 bg-white dark:bg-gray-950 text-center">
+                <span class="text-gray-900 dark:text-gray-100" x-text="vital.temperature ? (vital.temperature / 10).toFixed(1) : '-'"></span>
+            </td>
+        </template>
+        <!-- New column (editable) -->
+        <template x-if="showNewColumn">
+            <td class="py-2 px-2 bg-white dark:bg-gray-950">
+                <flux:input type="number"
+                            wire:model="form.temperature"
+                            placeholder="98.6"
+                            step="0.1" />
+            </td>
+        </template>
+        <td class="bg-white dark:bg-gray-950 sticky right-0 z-10"></td>
+    </tr>
+
+    <tr class="border-b border-gray-100 dark:border-gray-800">
+        <td class="py-2 px-4 font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-950 sticky left-0 z-10 shadow-[2px_0_5px_-2px_rgba(0,0,0,0.1)] dark:shadow-[2px_0_5px_-2px_rgba(0,0,0,0.3)]">Temperature Source</td>
+        <template x-for="(column, index) in []" :key="'temp-source-' + index">
+            <td class="py-2 px-2 bg-white dark:bg-gray-950">
+                <flux:select wire:model="form.temperatureSource" placeholder="Select..." autocomplete="off">
+                    @foreach(\App\Enums\Temp::cases() as $temp)
+                        <option value="{{ $temp->value }}">{{ $temp->label() }}</option>
+                    @endforeach
+                </flux:select>
+            </td>
+        </template>
+        <td class="bg-white dark:bg-gray-950 sticky right-0 z-10"></td>
+    </tr>
+
+    <tr class="border-b border-gray-100 dark:border-gray-800">
+        <td class="py-2 px-4 font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-950 sticky left-0 z-10 shadow-[2px_0_5px_-2px_rgba(0,0,0,0.1)] dark:shadow-[2px_0_5px_-2px_rgba(0,0,0,0.3)]">Heart Rate</td>
+        <template x-for="(column, index) in []" :key="'hr-' + index">
+            <td class="py-2 px-2 bg-white dark:bg-gray-950">
+                <flux:input type="number"
+                            wire:model="form.heartRate"
+                            placeholder="75" />
+            </td>
+        </template>
+        <td class="bg-white dark:bg-gray-950 sticky right-0 z-10"></td>
+    </tr>
+
+    <tr class="border-b border-gray-100 dark:border-gray-800">
+        <td class="py-2 px-4 font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-950 sticky left-0 z-10 shadow-[2px_0_5px_-2px_rgba(0,0,0,0.1)] dark:shadow-[2px_0_5px_-2px_rgba(0,0,0,0.3)]">Heart Rate Source</td>
+        <template x-for="(column, index) in []" :key="'hr-source-' + index">
+            <td class="py-2 px-2 bg-white dark:bg-gray-950">
+                <flux:select wire:model="form.heartRateSource" placeholder="Select..." autocomplete="off">
+                    @foreach(\App\Enums\Heart::cases() as $heart)
+                        <option value="{{ $heart->value }}">{{ $heart->label() }}</option>
+                    @endforeach
+                </flux:select>
+            </td>
+        </template>
+        <td class="bg-white dark:bg-gray-950 sticky right-0 z-10"></td>
+    </tr>
+
+    <tr class="border-b border-gray-100 dark:border-gray-800">
+        <td class="py-2 px-4 font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-950 sticky left-0 z-10 shadow-[2px_0_5px_-2px_rgba(0,0,0,0.1)] dark:shadow-[2px_0_5px_-2px_rgba(0,0,0,0.3)]">Resp</td>
+        <template x-for="(column, index) in []" :key="'resp-' + index">
+            <td class="py-2 px-2 bg-white dark:bg-gray-950">
+                <flux:input type="number"
+                            wire:model="form.resp"
+                            placeholder="16" />
+            </td>
+        </template>
+        <td class="bg-white dark:bg-gray-950 sticky right-0 z-10"></td>
+    </tr>
+
+    <tr class="border-b border-gray-100 dark:border-gray-800">
+        <td class="py-2 px-4 font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-950 sticky left-0 z-10 shadow-[2px_0_5px_-2px_rgba(0,0,0,0.1)] dark:shadow-[2px_0_5px_-2px_rgba(0,0,0,0.3)]">BP</td>
+        <template x-for="(column, index) in []" :key="'bp-' + index">
+            <td class="py-2 px-2 bg-white dark:bg-gray-950">
+                <div class="flex items-center gap-2">
+                    <flux:input
+                        type="number"
+                        wire:model="form.systolic"
+                        placeholder="85"
+                        class="w-20"
+                    />
+                    <span class="text-gray-500">/</span>
+                    <flux:input
+                        type="number"
+                        wire:model="form.diastolic"
+                        placeholder="85"
+                        class="w-20"
+                    />
+                </div>
+            </td>
+        </template>
+        <td class="bg-white dark:bg-gray-950 sticky right-0 z-10"></td>
+    </tr>
+
+    <tr class="border-b border-gray-100 dark:border-gray-800">
+        <td class="py-2 px-4 font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-950 sticky left-0 z-10 shadow-[2px_0_5px_-2px_rgba(0,0,0,0.1)] dark:shadow-[2px_0_5px_-2px_rgba(0,0,0,0.3)]">BP Source</td>
+        <template x-for="(column, index) in []" :key="'bp-source-' + index">
+            <td class="py-2 px-2 bg-white dark:bg-gray-950">
+                <flux:select wire:model="form.bpSource" placeholder="Select..." autocomplete="off">
+                    @foreach(\App\Enums\BpSource::cases() as $source)
+                        <option value="{{ $source->value }}">{{ $source->label() }}</option>
+                    @endforeach
+                </flux:select>
+            </td>
+        </template>
+        <td class="bg-white dark:bg-gray-950 sticky right-0 z-10"></td>
+    </tr>
+
+    <tr class="border-b border-gray-100 dark:border-gray-800">
+        <td class="py-2 px-4 font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-950 sticky left-0 z-10 shadow-[2px_0_5px_-2px_rgba(0,0,0,0.1)] dark:shadow-[2px_0_5px_-2px_rgba(0,0,0,0.3)]">BP Method</td>
+        <template x-for="(column, index) in []" :key="'bp-method-' + index">
+            <td class="py-2 px-2 bg-white dark:bg-gray-950">
+                <flux:select wire:model="form.bpMethod" placeholder="Select..." autocomplete="off">
+                    @foreach(\App\Enums\BpMethod::cases() as $method)
+                        <option value="{{ $method->value }}">{{ $method->label() }}</option>
+                    @endforeach
+                </flux:select>
+            </td>
+        </template>
+        <td class="bg-white dark:bg-gray-950 sticky right-0 z-10"></td>
+    </tr>
+
+    <tr class="border-b border-gray-100 dark:border-gray-800">
+        <td class="py-2 px-4 font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-950 sticky left-0 z-10 shadow-[2px_0_5px_-2px_rgba(0,0,0,0.1)] dark:shadow-[2px_0_5px_-2px_rgba(0,0,0,0.3)]">Patient Position</td>
+        <template x-for="(column, index) in []" :key="'position-' + index">
+            <td class="py-2 px-2 bg-white dark:bg-gray-950">
+                <flux:select wire:model="form.patientPosition" placeholder="Select..." autocomplete="off">
+                    @foreach(\App\Enums\PatientPosition::cases() as $position)
+                        <option value="{{ $position->value }}">{{ $position->label() }}</option>
+                    @endforeach
+                </flux:select>
+            </td>
+        </template>
+        <td class="bg-white dark:bg-gray-950 sticky right-0 z-10"></td>
+    </tr>
+
+    <tr class="border-b-4 border-gray-200 dark:border-gray-700">
+        <td class="py-2 px-4 font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-950 sticky left-0 z-10 shadow-[2px_0_5px_-2px_rgba(0,0,0,0.1)] dark:shadow-[2px_0_5px_-2px_rgba(0,0,0,0.3)]">Abdominal Girth</td>
+        <template x-for="(column, index) in []" :key="'girth-' + index">
+            <td class="py-2 px-2 bg-white dark:bg-gray-950">
+                <flux:input
+                    type="number"
+                    wire:model="form.abdominalGirth"
+                    placeholder="cm"
+                    step="0.1"
+                />
+            </td>
+        </template>
+        <td class="bg-white dark:bg-gray-950 sticky right-0 z-10"></td>
+    </tr>
+
+    <tr class="bg-gray-50 dark:bg-gray-900/50">
+        <td class="py-3 px-4 font-semibold text-gray-900 dark:text-gray-100 sticky left-0 z-10 bg-gray-50 dark:bg-gray-900/50 shadow-[2px_0_5px_-2px_rgba(0,0,0,0.1)] dark:shadow-[2px_0_5px_-2px_rgba(0,0,0,0.3)]">Pain Assessment</td>
+        <template x-for="(column, index) in []" :key="'pain-header-' + index">
+            <td class="bg-gray-50 dark:bg-gray-900/50"></td>
+        </template>
+        <td class="bg-gray-50 dark:bg-gray-900/50 sticky right-0 z-10"></td>
+    </tr>
+
+    <tr class="border-b border-gray-100 dark:border-gray-800">
+        <td class="py-2 px-4 font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-950 sticky left-0 z-10 shadow-[2px_0_5px_-2px_rgba(0,0,0,0.1)] dark:shadow-[2px_0_5px_-2px_rgba(0,0,0,0.3)]">Pain Scale</td>
+        <template x-for="(column, index) in []" :key="'pain-scale-' + index">
+            <td class="py-2 px-2 bg-white dark:bg-gray-950">
+                <flux:select wire:model.live="form.painScale" placeholder="Select..." autocomplete="off">
+                    @foreach(\App\Enums\PainScale::cases() as $scale)
+                        <option value="{{ $scale->value }}">{{ $scale->label() }}</option>
+                    @endforeach
+                </flux:select>
+            </td>
+        </template>
+        <td class="bg-white dark:bg-gray-950 sticky right-0 z-10"></td>
+    </tr>
+
+    <tr class="border-b border-gray-100 dark:border-gray-800">
+        <td class="py-2 px-4 font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-950 sticky left-0 z-10 shadow-[2px_0_5px_-2px_rgba(0,0,0,0.1)] dark:shadow-[2px_0_5px_-2px_rgba(0,0,0,0.3)]">Pain Score</td>
+        <template x-for="(column, index) in []" :key="'pain-score-' + index">
+            <td class="py-2 px-2 bg-white dark:bg-gray-950">
+                <flux:select wire:model.live="form.painScore" placeholder="Select..." autocomplete="off">
+                    @if($this->form->painScale === \App\Enums\PainScale::NUMERIC->value)
+                        @foreach(\App\Enums\NumericPainScale::cases() as $scale)
+                            <option value="{{ $scale->value }}">{{ $scale->label() }}</option>
+                        @endforeach
+                    @elseif($this->form->painScale === \App\Enums\PainScale::FACE->value)
+                        @foreach(\App\Enums\FacePainScale::cases() as $scale)
+                            <option value="{{ $scale->value }}">{{ $scale->label() }}</option>
+                        @endforeach
+                    @endif
+                </flux:select>
+            </td>
+        </template>
+        <td class="bg-white dark:bg-gray-950 sticky right-0 z-10"></td>
+    </tr>
+
+    <tr class="border-b border-gray-100 dark:border-gray-800">
+        <td class="py-2 px-4 font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-950 sticky left-0 z-10 shadow-[2px_0_5px_-2px_rgba(0,0,0,0.1)] dark:shadow-[2px_0_5px_-2px_rgba(0,0,0,0.3)]">Pain Goal</td>
+        <template x-for="(column, index) in []" :key="'pain-goal-' + index">
+            <td class="py-2 px-2 bg-white dark:bg-gray-950">
+                <flux:input
+                    type="number"
+                    wire:model="form.painGoal"
+                    placeholder="0-10"
+                />
+            </td>
+        </template>
+        <td class="bg-white dark:bg-gray-950 sticky right-0 z-10"></td>
+    </tr>
+
+    <tr class="border-b border-gray-100 dark:border-gray-800">
+        <td class="py-2 px-4 font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-950 sticky left-0 z-10 shadow-[2px_0_5px_-2px_rgba(0,0,0,0.1)] dark:shadow-[2px_0_5px_-2px_rgba(0,0,0,0.3)]">Pain Location</td>
+        <template x-for="(column, index) in []" :key="'pain-location-' + index">
+            <td class="py-2 px-2 bg-white dark:bg-gray-950">
+                <flux:input
+                    type="text"
+                    wire:model="form.painLocation"
+                    placeholder="e.g., Abdomen"
+                />
+            </td>
+        </template>
+        <td class="bg-white dark:bg-gray-950 sticky right-0 z-10"></td>
+    </tr>
+
+    <tr class="border-b-4 border-gray-200 dark:border-gray-700">
+        <td class="py-2 px-4 font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-950 sticky left-0 z-10 shadow-[2px_0_5px_-2px_rgba(0,0,0,0.1)] dark:shadow-[2px_0_5px_-2px_rgba(0,0,0,0.3)]">Pain Descriptors</td>
+        <template x-for="(column, index) in []" :key="'pain-desc-' + index">
+            <td class="py-2 px-2 bg-white dark:bg-gray-950">
+                <flux:select wire:model="form.painDescriptors" variant="listbox" multiple placeholder="Select..." autocomplete="off">
+                    @foreach(\App\Enums\PainDescriptors::cases() as $descriptor)
+                        <flux:select.option>{{ $descriptor->label() }}</flux:select.option>
+                    @endforeach
+                </flux:select>
+            </td>
+        </template>
+        <td class="bg-white dark:bg-gray-950 sticky right-0 z-10"></td>
+    </tr>
+
+    <tr class="bg-gray-50 dark:bg-gray-900/50">
+        <td class="py-3 px-4 font-semibold text-gray-900 dark:text-gray-100 sticky left-0 z-10 bg-gray-50 dark:bg-gray-900/50 shadow-[2px_0_5px_-2px_rgba(0,0,0,0.1)] dark:shadow-[2px_0_5px_-2px_rgba(0,0,0,0.3)]">Oxygen Therapy</td>
+        <template x-for="(column, index) in []" :key="'oxygen-header-' + index">
+            <td class="bg-gray-50 dark:bg-gray-900/50"></td>
+        </template>
+        <td class="bg-gray-50 dark:bg-gray-900/50 sticky right-0 z-10"></td>
+    </tr>
+
+    <tr class="border-b border-gray-100 dark:border-gray-800">
+        <td class="py-2 px-4 font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-950 sticky left-0 z-10 shadow-[2px_0_5px_-2px_rgba(0,0,0,0.1)] dark:shadow-[2px_0_5px_-2px_rgba(0,0,0,0.3)]">SpO2</td>
+        <template x-for="(column, index) in []" :key="'spo2-' + index">
+            <td class="py-2 px-2 bg-white dark:bg-gray-950">
+                <flux:input
+                    type="number"
+                    wire:model="form.spo2"
+                    placeholder="93"
+                    min="0"
+                    max="100"
+                />
+            </td>
+        </template>
+        <td class="bg-white dark:bg-gray-950 sticky right-0 z-10"></td>
+    </tr>
+
+    <tr class="border-b border-gray-100 dark:border-gray-800">
+        <td class="py-2 px-4 font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-950 sticky left-0 z-10 shadow-[2px_0_5px_-2px_rgba(0,0,0,0.1)] dark:shadow-[2px_0_5px_-2px_rgba(0,0,0,0.3)]">Oxygen Device</td>
+        <template x-for="(column, index) in []" :key="'o2-device-' + index">
+            <td class="py-2 px-2 bg-white dark:bg-gray-950">
+                <flux:select wire:model="form.oxygenDevice" placeholder="Select..." autocomplete="off">
+                    @foreach(\App\Enums\Oxygen::cases() as $oxygen)
+                        <flux:select.option>{{ $oxygen->label() }}</flux:select.option>
+                    @endforeach
+                </flux:select>
+            </td>
+        </template>
+        <td class="bg-white dark:bg-gray-950 sticky right-0 z-10"></td>
+    </tr>
+    </tbody>
+</table>
+</div>

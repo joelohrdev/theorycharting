@@ -82,4 +82,56 @@
             </div>
         </div>
     </div>
+
+    <flux:separator class="my-6" />
+
+    <div x-data="{
+        activeTab: 'vital-signs',
+        columns: [
+            { time: '1100', data: {} },
+            { time: '1200', data: {} },
+            { time: '1300', data: {} },
+            { time: '1400', data: {} }
+        ],
+        addColumn() {
+            const lastTime = this.columns[this.columns.length - 1].time;
+            const nextTime = String(parseInt(lastTime) + 100).padStart(4, '0');
+            this.columns.push({ time: nextTime, data: {} });
+        },
+        removeColumn(index) {
+            if (this.columns.length > 1) {
+                this.columns.splice(index, 1);
+            }
+        }
+    }">
+        <div class="bg-gray-100 dark:bg-gray-800 rounded-lg p-1 inline-flex gap-1 mb-4">
+            <button @click="activeTab = 'vital-signs'"
+                    :class="activeTab === 'vital-signs' ? 'bg-white dark:bg-gray-700 shadow' : 'text-gray-600 dark:text-gray-400'"
+                    class="px-4 py-2 rounded-md text-sm font-medium transition-colors">
+                Vital Signs
+            </button>
+            <button @click="activeTab = 'intake-output'"
+                    :class="activeTab === 'intake-output' ? 'bg-white dark:bg-gray-700 shadow' : 'text-gray-600 dark:text-gray-400'"
+                    class="px-4 py-2 rounded-md text-sm font-medium transition-colors">
+                Intake/Output
+            </button>
+            <button @click="activeTab = 'restraints'"
+                    :class="activeTab === 'restraints' ? 'bg-white dark:bg-gray-700 shadow' : 'text-gray-600 dark:text-gray-400'"
+                    class="px-4 py-2 rounded-md text-sm font-medium transition-colors">
+                Restraints
+            </button>
+        </div>
+
+        <div x-show="activeTab === 'vital-signs'">
+            <livewire:patient.vitals-form :$patient />
+        </div>
+
+        <div x-show="activeTab === 'intake-output'" class="text-gray-500 dark:text-gray-400 py-8 text-center">
+            Intake/Output content coming soon...
+        </div>
+
+        <div x-show="activeTab === 'restraints'" class="text-gray-500 dark:text-gray-400 py-8 text-center">
+            Restraints content coming soon...
+        </div>
+    </div>
 </x-layouts.app>

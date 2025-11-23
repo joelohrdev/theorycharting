@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use App\enums\Role;
+use App\Enums\Role;
 use App\Livewire\Student\Invite;
 use App\Models\Invitation;
 use App\Models\User;

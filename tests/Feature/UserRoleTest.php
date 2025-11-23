@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use App\enums\Role;
+use App\Enums\Role;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 

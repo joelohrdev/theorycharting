@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Livewire\Forms;
 
-use App\enums\Role;
+use App\Enums\Role;
 use App\Models\Invitation;
 use Livewire\Attributes\Rule;
 use Livewire\Form;

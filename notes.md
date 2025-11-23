@@ -1,0 +1,5 @@
+- Oxygen Device needs to be a dropdown
+- - If NASALCANUAL selected, display field to enter liters (L)
+- Pain Assessment
+- - Add Pain Scale above Pain Score
+- 
