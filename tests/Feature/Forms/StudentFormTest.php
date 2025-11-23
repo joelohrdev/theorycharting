@@ -10,89 +10,77 @@ use Illuminate\Support\Facades\Mail;
 use Livewire\Livewire;
 
 describe('StudentForm validation through Invite component', function () {
-    test('form requires email field', function () {
+    test('form requires studentId field', function () {
         Mail::fake();
 
         $teacher = User::factory()->teacher()->create();
 
         Livewire::actingAs($teacher)
             ->test(Invite::class)
-            ->set('form.email', '')
+            ->set('form.studentId', '')
             ->call('sendInvite')
-            ->assertHasErrors(['form.email' => 'required']);
+            ->assertHasErrors(['form.studentId' => 'required']);
     });
 
-    test('form requires valid email format', function () {
-        Mail::fake();
-
-        $teacher = User::factory()->teacher()->create();
-
-        Livewire::actingAs($teacher)
-            ->test(Invite::class)
-            ->set('form.email', 'not-an-email')
-            ->call('sendInvite')
-            ->assertHasErrors(['form.email' => 'email']);
-    });
-
-    test('form validates unique email against users table', function () {
+    test('form validates unique studentId against users table', function () {
         Mail::fake();
 
         $teacher = User::factory()->teacher()->create();
         $existingStudent = User::factory()->student()->forTeacher($teacher)->create([
-            'email' => 'existing@example.com',
+            'email' => '1234567@student.techcampus.org',
         ]);
 
         Livewire::actingAs($teacher)
             ->test(Invite::class)
-            ->set('form.email', 'existing@example.com')
+            ->set('form.studentId', '1234567')
             ->call('sendInvite')
-            ->assertHasErrors(['form.email' => 'unique']);
+            ->assertHasErrors(['form.studentId']);
     });
 
-    test('form validates unique email against invitations table', function () {
+    test('form validates unique studentId against invitations table', function () {
         Mail::fake();
 
         $teacher = User::factory()->teacher()->create();
         Invitation::factory()->forTeacher($teacher)->create([
-            'email' => 'pending@example.com',
+            'email' => '7654321@student.techcampus.org',
         ]);
 
         Livewire::actingAs($teacher)
             ->test(Invite::class)
-            ->set('form.email', 'pending@example.com')
+            ->set('form.studentId', '7654321')
             ->call('sendInvite')
-            ->assertHasErrors(['form.email' => 'unique']);
+            ->assertHasErrors(['form.studentId']);
     });
 
-    test('form accepts valid unique email', function () {
+    test('form accepts valid unique studentId', function () {
         Mail::fake();
 
         $teacher = User::factory()->teacher()->create();
 
         Livewire::actingAs($teacher)
             ->test(Invite::class)
-            ->set('form.email', 'valid@example.com')
+            ->set('form.studentId', '9999999')
             ->call('sendInvite')
             ->assertHasNoErrors();
 
-        expect(Invitation::where('email', 'valid@example.com')->exists())->toBeTrue();
+        expect(Invitation::where('email', '9999999@student.techcampus.org')->exists())->toBeTrue();
     });
 });
 
 describe('StudentForm save functionality', function () {
-    test('form creates invitation with correct email', function () {
+    test('form creates invitation with correct email from studentId', function () {
         Mail::fake();
 
         $teacher = User::factory()->teacher()->create();
 
         Livewire::actingAs($teacher)
             ->test(Invite::class)
-            ->set('form.email', 'newstudent@example.com')
+            ->set('form.studentId', '1234567')
             ->call('sendInvite');
 
-        $invitation = Invitation::where('email', 'newstudent@example.com')->first();
+        $invitation = Invitation::where('email', '1234567@student.techcampus.org')->first();
 
-        expect($invitation->email)->toBe('newstudent@example.com');
+        expect($invitation->email)->toBe('1234567@student.techcampus.org');
     });
 
     test('form creates invitation with student role', function () {
@@ -102,10 +90,10 @@ describe('StudentForm save functionality', function () {
 
         Livewire::actingAs($teacher)
             ->test(Invite::class)
-            ->set('form.email', 'student@example.com')
+            ->set('form.studentId', '2345678')
             ->call('sendInvite');
 
-        $invitation = Invitation::where('email', 'student@example.com')->first();
+        $invitation = Invitation::where('email', '2345678@student.techcampus.org')->first();
 
         expect($invitation->role)->toBe(Role::STUDENT);
     });
@@ -117,10 +105,10 @@ describe('StudentForm save functionality', function () {
 
         Livewire::actingAs($teacher)
             ->test(Invite::class)
-            ->set('form.email', 'student@example.com')
+            ->set('form.studentId', '3456789')
             ->call('sendInvite');
 
-        $invitation = Invitation::where('email', 'student@example.com')->first();
+        $invitation = Invitation::where('email', '3456789@student.techcampus.org')->first();
 
         expect($invitation->invited_by)->toBe($teacher->id);
     });
@@ -132,10 +120,10 @@ describe('StudentForm save functionality', function () {
 
         Livewire::actingAs($teacher)
             ->test(Invite::class)
-            ->set('form.email', 'student@example.com')
+            ->set('form.studentId', '4567890')
             ->call('sendInvite');
 
-        $invitation = Invitation::where('email', 'student@example.com')->first();
+        $invitation = Invitation::where('email', '4567890@student.techcampus.org')->first();
 
         expect($invitation->teacher_id)->toBe($teacher->id);
     });
@@ -147,10 +135,10 @@ describe('StudentForm save functionality', function () {
 
         Livewire::actingAs($teacher)
             ->test(Invite::class)
-            ->set('form.email', 'student@example.com')
+            ->set('form.studentId', '5678901')
             ->call('sendInvite');
 
-        $invitation = Invitation::where('email', 'student@example.com')->first();
+        $invitation = Invitation::where('email', '5678901@student.techcampus.org')->first();
 
         expect($invitation->token)->not->toBeNull()
             ->and(mb_strlen($invitation->token))->toBe(64);
@@ -163,10 +151,10 @@ describe('StudentForm save functionality', function () {
 
         Livewire::actingAs($teacher)
             ->test(Invite::class)
-            ->set('form.email', 'student@example.com')
+            ->set('form.studentId', '6789012')
             ->call('sendInvite');
 
-        $invitation = Invitation::where('email', 'student@example.com')->first();
+        $invitation = Invitation::where('email', '6789012@student.techcampus.org')->first();
 
         expect(now()->diffInDays($invitation->expires_at, false))->toBeGreaterThanOrEqual(6)
             ->and(now()->diffInDays($invitation->expires_at, false))->toBeLessThanOrEqual(7);
@@ -179,10 +167,10 @@ describe('StudentForm save functionality', function () {
 
         Livewire::actingAs($teacher)
             ->test(Invite::class)
-            ->set('form.email', 'student@example.com')
+            ->set('form.studentId', '7890123')
             ->call('sendInvite');
 
-        $invitation = Invitation::where('email', 'student@example.com')->first();
+        $invitation = Invitation::where('email', '7890123@student.techcampus.org')->first();
 
         expect($invitation->accepted_at)->toBeNull();
     });
@@ -194,13 +182,13 @@ describe('StudentForm save functionality', function () {
 
         Livewire::actingAs($teacher)
             ->test(Invite::class)
-            ->set('form.email', 'persisted@example.com')
+            ->set('form.studentId', '8901234')
             ->call('sendInvite');
 
-        $invitation = Invitation::where('email', 'persisted@example.com')->first();
+        $invitation = Invitation::where('email', '8901234@student.techcampus.org')->first();
 
         expect($invitation)->not->toBeNull()
-            ->and(Invitation::where('email', 'persisted@example.com')->exists())->toBeTrue();
+            ->and(Invitation::where('email', '8901234@student.techcampus.org')->exists())->toBeTrue();
     });
 
     test('form returns invitation instance that is persisted', function () {
@@ -210,10 +198,10 @@ describe('StudentForm save functionality', function () {
 
         Livewire::actingAs($teacher)
             ->test(Invite::class)
-            ->set('form.email', 'student@example.com')
+            ->set('form.studentId', '9012345')
             ->call('sendInvite');
 
-        $invitation = Invitation::where('email', 'student@example.com')->first();
+        $invitation = Invitation::where('email', '9012345@student.techcampus.org')->first();
 
         expect($invitation)->toBeInstanceOf(Invitation::class);
     });
@@ -227,12 +215,12 @@ describe('StudentForm multiple invitations', function () {
 
         Livewire::actingAs($teacher)
             ->test(Invite::class)
-            ->set('form.email', 'student1@example.com')
+            ->set('form.studentId', '1111111')
             ->call('sendInvite');
 
         Livewire::actingAs($teacher)
             ->test(Invite::class)
-            ->set('form.email', 'student2@example.com')
+            ->set('form.studentId', '2222222')
             ->call('sendInvite');
 
         expect(Invitation::where('teacher_id', $teacher->id)->count())->toBe(2);
@@ -245,17 +233,17 @@ describe('StudentForm multiple invitations', function () {
 
         Livewire::actingAs($teacher)
             ->test(Invite::class)
-            ->set('form.email', 'student1@example.com')
+            ->set('form.studentId', '3333333')
             ->call('sendInvite');
 
-        $invitation1 = Invitation::where('email', 'student1@example.com')->first();
+        $invitation1 = Invitation::where('email', '3333333@student.techcampus.org')->first();
 
         Livewire::actingAs($teacher)
             ->test(Invite::class)
-            ->set('form.email', 'student2@example.com')
+            ->set('form.studentId', '4444444')
             ->call('sendInvite');
 
-        $invitation2 = Invitation::where('email', 'student2@example.com')->first();
+        $invitation2 = Invitation::where('email', '4444444@student.techcampus.org')->first();
 
         expect($invitation1->token)->not->toBe($invitation2->token);
     });

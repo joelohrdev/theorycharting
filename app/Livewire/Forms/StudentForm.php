@@ -6,20 +6,35 @@ namespace App\Livewire\Forms;
 
 use App\Enums\Role;
 use App\Models\Invitation;
-use Livewire\Attributes\Rule;
+use App\Models\User;
 use Livewire\Form;
 
 final class StudentForm extends Form
 {
-    #[Rule(['required', 'email', 'unique:users,email', 'unique:invitations,email'])]
-    public string $email = '';
+    public string $studentId = '';
 
     public function save(): Invitation
     {
-        $this->validate();
+        $email = $this->studentId.'@student.techcampus.org';
+
+        $this->validate([
+            'studentId' => [
+                'required',
+                'string',
+                'not_regex:/[!@#$%^&*()]/',
+                function ($attribute, $value, $fail) use ($email) {
+                    if (User::where('email', $email)->exists()) {
+                        $fail('This student ID is already registered.');
+                    }
+                    if (Invitation::where('email', $email)->exists()) {
+                        $fail('This student ID already has a pending invitation.');
+                    }
+                },
+            ],
+        ]);
 
         return Invitation::create([
-            'email' => $this->email,
+            'email' => $email,
             'token' => Invitation::generateToken(),
             'role' => Role::STUDENT,
             'invited_by' => auth()->id(),

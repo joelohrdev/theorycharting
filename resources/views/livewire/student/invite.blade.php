@@ -10,13 +10,15 @@
             </div>
 
             <flux:field>
-                <flux:label>Email Address</flux:label>
+                <flux:label>Student ID</flux:label>
+                <flux:description>An email will be sent to @student.techcampus.org</flux:description>
                 <flux:input
-                    wire:model="form.email"
-                    type="email"
+                    wire:model="form.studentId"
+                    placeholder="1234567"
+                    type="text"
                     required
                 />
-                <flux:error name="email" />
+                <flux:error name="form.studentId" />
             </flux:field>
 
             <div class="flex">

@@ -291,11 +291,11 @@ describe('Student invitation authorization', function () {
 
         Livewire\Livewire::actingAs($teacher)
             ->test(App\Livewire\Student\Invite::class)
-            ->set('form.email', 'newstudent@example.com')
+            ->set('form.studentId', '1234567')
             ->call('sendInvite')
             ->assertHasNoErrors();
 
-        expect(App\Models\Invitation::where('email', 'newstudent@example.com')->exists())->toBeTrue();
+        expect(App\Models\Invitation::where('email', '1234567@student.techcampus.org')->exists())->toBeTrue();
     });
 
     test('student cannot invite students', function () {
@@ -306,10 +306,10 @@ describe('Student invitation authorization', function () {
 
         Livewire\Livewire::actingAs($student)
             ->test(App\Livewire\Student\Invite::class)
-            ->set('form.email', 'another@example.com')
+            ->set('form.studentId', '7654321')
             ->call('sendInvite')
             ->assertForbidden();
 
-        expect(App\Models\Invitation::where('email', 'another@example.com')->exists())->toBeFalse();
+        expect(App\Models\Invitation::where('email', '7654321@student.techcampus.org')->exists())->toBeFalse();
     });
 });
