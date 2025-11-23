@@ -85,10 +85,19 @@
             </a>
 
             <flux:navlist variant="outline">
-                <flux:navlist.group :heading="__('Platform')">
-                    <flux:navlist.item icon="layout-grid" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>
+                <flux:navlist.group>
+                    <flux:navlist.item :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>
                     {{ __('Dashboard') }}
                     </flux:navlist.item>
+                    @if(auth()->user()->is_admin)
+                        <flux:navlist.item :href="route('teacher.index')" :current="request()->routeIs('teacher.index')" wire:navigate>
+                            {{ __('Teachers') }}
+                        </flux:navlist.item>
+                    @endif
+                    @if(auth()->user()->is_admin || auth()->user()->isTeacher())
+                        <flux:navlist.item :href="route('student.index')" :current="request()->routeIs('student.*')" wire:navigate>{{ __('Students') }}</flux:navlist.item>
+                    @endif
+                    <flux:navlist.item :href="route('patient.index')" :current="request()->routeIs('patient.*')" wire:navigate>{{ __('Patients') }}</flux:navlist.item>
                 </flux:navlist.group>
             </flux:navlist>
 
