@@ -131,7 +131,7 @@
         </div>
 
         <div x-show="activeTab === 'intake-output'" class="text-gray-500 dark:text-gray-400 py-8 text-center">
-            <livewire:patient.input-output :$patient />
+            <livewire:patient.intake-output :$patient />
         </div>
 
         <div x-show="activeTab === 'restraints'" class="text-gray-500 dark:text-gray-400 py-8 text-center">
