@@ -131,11 +131,11 @@
         </div>
 
         <div x-show="activeTab === 'intake-output'" class="text-gray-500 dark:text-gray-400 py-8 text-center">
-            Intake/Output content coming soon...
+            <livewire:patient.input-output :$patient />
         </div>
 
         <div x-show="activeTab === 'restraints'" class="text-gray-500 dark:text-gray-400 py-8 text-center">
-            ADLs content coming soon...
+            <livewire:patient.adl :$patient />
         </div>
     </div>
 </x-layouts.app>
