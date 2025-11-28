@@ -4,8 +4,8 @@
         <flux:button wire:navigate :href="route('patient.index')" size="sm" variant="ghost" icon="arrow-left">Back</flux:button>
     </div>
     <flux:separator class="mb-4" />
-    <div class="space-y-2">
-        <div class=" flex gap-4 font-mono text-xs">
+    <div class="grid grid-cols-4 gap-4 space-y-2">
+        <flux:card class="flex flex-col gap-2 font-mono text-xs">
             <div>
                 <span class="font-bold">MRN:</span>
                 {{ $patient->mrn }}
@@ -16,7 +16,11 @@
             </div>
             <div>
                 <span class="font-bold">DOB:</span>
-                {{ $patient->birth_date->format('m/d/Y') }} {{ $patient->gender }}
+                {{ $patient->birth_date->format('m/d/Y') }}
+            </div>
+            <div>
+                <span class="font-bold">Sex:</span>
+                {{ $patient->gender }}
             </div>
             <div>
                 <span class="font-bold">Room:</span>
@@ -26,8 +30,8 @@
                 <span class="font-bold">Admission Date:</span>
                 {{ $patient->admission_date->format('m/d/Y') }}
             </div>
-        </div>
-        <div class=" flex gap-4 font-mono text-xs">
+        </flux:card>
+        <flux:card class="flex flex-col gap-2 font-mono text-xs">
             <div>
                 <span class="font-bold">Diagnosis:</span>
                 {{ $patient->diagnosis }}
@@ -44,8 +48,8 @@
                 <span class="font-bold">Procedure:</span>
                 {{ $patient->procedure }}
             </div>
-        </div>
-        <div class=" flex gap-4 font-mono text-xs">
+        </flux:card>
+        <flux:card class="flex flex-col gap-2 font-mono text-xs">
             <div>
                 <span class="font-bold">Status:</span>
                 {{ $patient->status }}
@@ -62,8 +66,8 @@
                 <span class="font-bold">Procedure:</span>
                 {{ $patient->procedure }}
             </div>
-        </div>
-        <div class=" flex gap-4 font-mono text-xs">
+        </flux:card>
+        <flux:card class="flex flex-col gap-2 font-mono text-xs">
             <div>
                 <span class="font-bold">Attending MD:</span>
                 {{ $patient->attending_md }}
@@ -80,7 +84,7 @@
                 <span class="font-bold">Procedure:</span>
                 {{ $patient->procedure }}
             </div>
-        </div>
+        </flux:card>
     </div>
 
     <flux:separator class="my-6" />
