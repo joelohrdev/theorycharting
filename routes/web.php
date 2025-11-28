@@ -8,9 +8,7 @@ use Illuminate\Support\Facades\Route;
 use Laravel\Fortify\Features;
 use Livewire\Volt\Volt;
 
-Route::get('/', function () {
-    return view('livewire.auth.login');
-})->name('home');
+Route::get('/', function () { return view('livewire.auth.login'); })->name('home');
 Route::get('/invitation/{token}', AcceptInvitationController::class)->name('invitation.accept');
 
 Route::middleware(['auth', 'verified'])->group(function () {

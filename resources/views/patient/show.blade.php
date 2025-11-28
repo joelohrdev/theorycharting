@@ -122,7 +122,7 @@
             <button @click="activeTab = 'restraints'"
                     :class="activeTab === 'restraints' ? 'bg-white dark:bg-gray-700 shadow' : 'text-gray-600 dark:text-gray-400'"
                     class="px-4 py-2 rounded-md text-sm font-medium transition-colors">
-                Restraints
+                ADLs
             </button>
         </div>
 
@@ -135,7 +135,7 @@
         </div>
 
         <div x-show="activeTab === 'restraints'" class="text-gray-500 dark:text-gray-400 py-8 text-center">
-            Restraints content coming soon...
+            ADLs content coming soon...
         </div>
     </div>
 </x-layouts.app>
