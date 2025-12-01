@@ -4,7 +4,7 @@
         <flux:button wire:navigate :href="route('patient.index')" size="sm" variant="ghost" icon="arrow-left">Back</flux:button>
     </div>
     <flux:separator class="mb-4" />
-    <div class="grid grid-cols-4 gap-4 space-y-2">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 space-y-2">
         <flux:card class="flex flex-col gap-2 font-mono text-xs">
             <div>
                 <span class="font-bold">MRN:</span>
@@ -32,6 +32,10 @@
             </div>
         </flux:card>
         <flux:card class="flex flex-col gap-2 font-mono text-xs">
+            <div>
+                <span class="font-bold">Attending MD:</span>
+                {{ $patient->attending_md }}
+            </div>
             <div>
                 <span class="font-bold">Diagnosis:</span>
                 {{ $patient->diagnosis }}
@@ -62,28 +66,9 @@
                 <span class="font-bold">Unit:</span>
                 {{ $patient->unit }}
             </div>
-            <div>
-                <span class="font-bold">Procedure:</span>
-                {{ $patient->procedure }}
-            </div>
         </flux:card>
         <flux:card class="flex flex-col gap-2 font-mono text-xs">
-            <div>
-                <span class="font-bold">Attending MD:</span>
-                {{ $patient->attending_md }}
-            </div>
-            <div>
-                <span class="font-bold">Isolation:</span>
-                {{ $patient->isolation }}
-            </div>
-            <div>
-                <span class="font-bold">Unit:</span>
-                {{ $patient->unit }}
-            </div>
-            <div>
-                <span class="font-bold">Procedure:</span>
-                {{ $patient->procedure }}
-            </div>
+
         </flux:card>
     </div>
 
@@ -130,11 +115,11 @@
             <livewire:patient.vitals-form :$patient />
         </div>
 
-        <div x-show="activeTab === 'intake-output'" class="text-gray-500 dark:text-gray-400 py-8 text-center">
+        <div x-show="activeTab === 'intake-output'" class="text-gray-500 dark:text-gray-400 text-center">
             <livewire:patient.intake-output :$patient />
         </div>
 
-        <div x-show="activeTab === 'restraints'" class="text-gray-500 dark:text-gray-400 py-8 text-center">
+        <div x-show="activeTab === 'restraints'" class="text-gray-500 dark:text-gray-400 text-center">
             <livewire:patient.adl :$patient />
         </div>
     </div>

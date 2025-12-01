@@ -57,6 +57,22 @@ final class Patient extends Model
     }
 
     /**
+     * @return HasMany<Intake, $this>
+     */
+    public function intakes(): HasMany
+    {
+        return $this->hasMany(Intake::class);
+    }
+
+    /**
+     * @return HasMany<Adl, $this>
+     */
+    public function adls(): HasMany
+    {
+        return $this->hasMany(Adl::class);
+    }
+
+    /**
      * @return array<string, string>
      */
     public function casts(): array
