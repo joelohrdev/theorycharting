@@ -6,7 +6,9 @@ namespace Database\Factories;
 
 use App\Enums\BpMethod;
 use App\Enums\BpSource;
+use App\Enums\FacePainScale;
 use App\Enums\Heart;
+use App\Enums\NumericPainScale;
 use App\Enums\Oxygen;
 use App\Enums\PainDescriptors;
 use App\Enums\PainScale;
@@ -28,6 +30,14 @@ final class VitalFactory extends Factory
      */
     public function definition(): array
     {
+        $painScale = fake()->randomElement(PainScale::cases());
+
+        // Generate appropriate pain score based on the pain scale type
+        $painScore = match ($painScale) {
+            PainScale::NUMERIC => (string) fake()->randomElement(NumericPainScale::cases())->value,
+            PainScale::FACE => fake()->randomElement(FacePainScale::cases())->value,
+        };
+
         return [
             'patient_id' => Patient::factory(),
             'user_id' => User::factory(),
@@ -42,8 +52,8 @@ final class VitalFactory extends Factory
             'bp_method' => fake()->randomElement(BpMethod::cases()),
             'patient_position' => fake()->randomElement(PatientPosition::cases()),
             'abdominal_girth' => fake()->numberBetween(70, 120).' cm',
-            'pain_scale' => fake()->randomElement(PainScale::cases()),
-            'pain_score' => (string) fake()->numberBetween(0, 10),
+            'pain_scale' => $painScale,
+            'pain_score' => $painScore,
             'pain_goal' => fake()->numberBetween(0, 5),
             'pain_location' => fake()->randomElement(['Abdomen', 'Chest', 'Back', 'Head', 'Leg', 'Arm']),
             'pain_descriptors' => fake()->randomElements(

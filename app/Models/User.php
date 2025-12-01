@@ -94,6 +94,22 @@ final class User extends Authenticatable
     }
 
     /**
+     * @return HasMany<Intake, $this>
+     */
+    public function intakes(): HasMany
+    {
+        return $this->hasMany(Intake::class);
+    }
+
+    /**
+     * @return HasMany<Adl, $this>
+     */
+    public function adls(): HasMany
+    {
+        return $this->hasMany(Adl::class);
+    }
+
+    /**
      * Get the user's initials
      */
     public function initials(): string
