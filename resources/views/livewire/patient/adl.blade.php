@@ -9,11 +9,16 @@ $hasOtherSelected = function($field, $adls, $formField = null) {
     showNewColumn: false,
     addColumn() {
         this.showNewColumn = true;
+        setTimeout(() => {
+            const wrapper = document.getElementById('adl-table-wrapper');
+            if (wrapper) wrapper.scrollTo({ left: 999999, behavior: 'smooth' });
+        }, 200);
     },
     cancelNewColumn() {
         this.showNewColumn = false;
     }
 }" wire:key="adl-{{ $patient->id }}">
+<div id="adl-table-wrapper" style="overflow-x: auto; margin-bottom: 100px;">
 <table class="w-full border-collapse text-sm">
     <colgroup>
         <col style="width: 256px; min-width: 256px; max-width: 256px;">
@@ -367,8 +372,9 @@ $hasOtherSelected = function($field, $adls, $formField = null) {
     ])
     </tbody>
 </table>
+</div>
 
-<div class="mt-6 flex justify-end" x-show="showNewColumn">
+<div x-show="showNewColumn" class="fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-900 border-t p-4 flex justify-end shadow-lg z-50">
     <flux:button variant="primary" wire:click="save">
         <span wire:loading.remove>Save ADL Record</span>
         <span wire:loading>Saving...</span>
