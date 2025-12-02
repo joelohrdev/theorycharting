@@ -1,6 +1,6 @@
 <div>
     <flux:modal.trigger name="import-patients">
-        <flux:button size="sm" variant="primary">Import Patients</flux:button>
+        <flux:button size="sm" variant="primary" icon="arrow-up-tray">Import Patients</flux:button>
     </flux:modal.trigger>
 
     <flux:modal name="import-patients" class="md:w-96">

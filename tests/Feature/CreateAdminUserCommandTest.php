@@ -4,16 +4,20 @@ declare(strict_types=1);
 
 use App\Enums\Role;
 use App\Models\User;
+use Laravel\Prompts\Prompt;
 
 use function Pest\Laravel\artisan;
 
 test('creates admin user with valid input', function () {
+    Prompt::fake([
+        'Admin User',
+        'admin@example.com',
+        'password123',
+        'password123',
+        true,
+    ]);
+
     artisan('app:create-admin-user')
-        ->expectsQuestion('What is the admin\'s name?', 'Admin User')
-        ->expectsQuestion('What is the admin\'s email?', 'admin@example.com')
-        ->expectsQuestion('Set a password', 'password123')
-        ->expectsQuestion('Confirm password', 'password123')
-        ->expectsQuestion('Create admin user with this information?', true)
         ->assertSuccessful()
         ->expectsOutput('Admin user created successfully!');
 
@@ -27,11 +31,14 @@ test('creates admin user with valid input', function () {
 });
 
 test('fails when passwords do not match', function () {
+    Prompt::fake([
+        'Admin User',
+        'admin@example.com',
+        'password123',
+        'differentpassword',
+    ]);
+
     artisan('app:create-admin-user')
-        ->expectsQuestion('What is the admin\'s name?', 'Admin User')
-        ->expectsQuestion('What is the admin\'s email?', 'admin@example.com')
-        ->expectsQuestion('Set a password', 'password123')
-        ->expectsQuestion('Confirm password', 'differentpassword')
         ->expectsOutput('Passwords do not match.')
         ->assertFailed();
 
@@ -41,19 +48,25 @@ test('fails when passwords do not match', function () {
 test('validates email uniqueness', function () {
     User::factory()->create(['email' => 'existing@example.com']);
 
+    Prompt::fake([
+        'Admin User',
+        'existing@example.com',
+    ]);
+
     artisan('app:create-admin-user')
-        ->expectsQuestion('What is the admin\'s name?', 'Admin User')
-        ->expectsQuestion('What is the admin\'s email?', 'existing@example.com')
         ->doesntExpectOutput('Admin user created successfully!');
 });
 
 test('cancels creation when not confirmed', function () {
+    Prompt::fake([
+        'Admin User',
+        'admin@example.com',
+        'password123',
+        'password123',
+        false,
+    ]);
+
     artisan('app:create-admin-user')
-        ->expectsQuestion('What is the admin\'s name?', 'Admin User')
-        ->expectsQuestion('What is the admin\'s email?', 'admin@example.com')
-        ->expectsQuestion('Set a password', 'password123')
-        ->expectsQuestion('Confirm password', 'password123')
-        ->expectsQuestion('Create admin user with this information?', false)
         ->expectsOutput('Admin user creation cancelled.')
         ->assertFailed();
 

@@ -24,6 +24,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('students/{student}', [StudentController::class, 'show'])->name('student.show');
 
     Route::view('patients', 'patient.index')->name('patient.index');
+    Route::view('patients/create', 'patient.create')->name('patient.create');
     Route::get('patients/{patient}', [PatientController::class, 'show'])->name('patient.show');
 });
 

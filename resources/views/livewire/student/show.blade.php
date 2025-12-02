@@ -1,5 +1,10 @@
 <?php
 
+use App\Enums\Activity;
+use App\Enums\Appetite;
+use App\Enums\Bathing;
+use App\Enums\Mobility;
+use App\Enums\OralCare;
 use App\Models\User;
 use Livewire\Attributes\Computed;
 use Livewire\Volt\Component;
@@ -140,7 +145,7 @@ new class extends Component {
                                 <flux:table.row>
                                     <flux:table.cell>{{ $intake->patient->name }}</flux:table.cell>
                                     <flux:table.cell>{{ $intake->created_at->format('M d, Y g:i A') }}</flux:table.cell>
-                                    <flux:table.cell>{{ is_array($intake->appetite) ? implode(', ', $intake->appetite) : ($intake->appetite ?? '-') }}</flux:table.cell>
+                                    <flux:table.cell>{{ $intake->appetite ? implode(', ', array_map(fn($value) => Appetite::from($value)->label(), $intake->appetite)) : '-' }}</flux:table.cell>
                                     <flux:table.cell>{{ $intake->percentage_eaten ? $intake->percentage_eaten . '%' : '-' }}</flux:table.cell>
                                     <flux:table.cell>{{ $intake->liquids ?? '-' }}</flux:table.cell>
                                     <flux:table.cell>{{ $intake->urine ?? '-' }}</flux:table.cell>
@@ -168,10 +173,10 @@ new class extends Component {
                                 <flux:table.row>
                                     <flux:table.cell>{{ $adl->patient->name }}</flux:table.cell>
                                     <flux:table.cell>{{ $adl->created_at->format('M d, Y g:i A') }}</flux:table.cell>
-                                    <flux:table.cell>{{ is_array($adl->bathing) ? implode(', ', $adl->bathing) : ($adl->bathing ?? '-') }}</flux:table.cell>
-                                    <flux:table.cell>{{ is_array($adl->oral_care) ? implode(', ', $adl->oral_care) : ($adl->oral_care ?? '-') }}</flux:table.cell>
-                                    <flux:table.cell>{{ is_array($adl->activity) ? implode(', ', $adl->activity) : ($adl->activity ?? '-') }}</flux:table.cell>
-                                    <flux:table.cell>{{ is_array($adl->mobility) ? implode(', ', $adl->mobility) : ($adl->mobility ?? '-') }}</flux:table.cell>
+                                    <flux:table.cell>{{ $adl->bathing ? implode(', ', array_map(fn($value) => Bathing::from($value)->label(), $adl->bathing)) : '-' }}</flux:table.cell>
+                                    <flux:table.cell>{{ $adl->oral_care ? implode(', ', array_map(fn($value) => OralCare::from($value)->label(), $adl->oral_care)) : '-' }}</flux:table.cell>
+                                    <flux:table.cell>{{ $adl->activity ? implode(', ', array_map(fn($value) => Activity::from($value)->label(), $adl->activity)) : '-' }}</flux:table.cell>
+                                    <flux:table.cell>{{ $adl->mobility ? implode(', ', array_map(fn($value) => Mobility::from($value)->label(), $adl->mobility)) : '-' }}</flux:table.cell>
                                 </flux:table.row>
                             @endforeach
                         </flux:table.rows>

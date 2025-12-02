@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Observers\PatientObserver;
 use Carbon\CarbonImmutable;
 use Database\Factories\PatientFactory;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -13,7 +15,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * @property-read int $id
- * @property-read string $uuid
+ * @property string $uuid
  * @property-read int $user_id
  * @property-read string $name
  * @property-read string $gender
@@ -32,6 +34,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property-read CarbonImmutable $created_at
  * @property-read CarbonImmutable $updated_at
  */
+#[ObservedBy(PatientObserver::class)]
 final class Patient extends Model
 {
     /** @use HasFactory<PatientFactory> */
