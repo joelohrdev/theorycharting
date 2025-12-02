@@ -41,6 +41,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property-read array<PainDescriptors>|null $pain_descriptors
  * @property-read int|null $sp02
  * @property-read Oxygen|null $oxygen_device
+ * @property-read int|null $o2
+ * @property-read int|null $glucose
  * @property-read CarbonImmutable $created_at
  * @property-read CarbonImmutable $updated_at
  */
@@ -103,6 +105,8 @@ final class Vital extends Model
             'pain_descriptors' => 'array',
             'sp02' => 'integer',
             'oxygen_device' => Oxygen::class,
+            'o2' => 'integer',
+            'glucose' => 'integer',
             'created_at' => 'datetime',
             'updated_at' => 'datetime',
         ];

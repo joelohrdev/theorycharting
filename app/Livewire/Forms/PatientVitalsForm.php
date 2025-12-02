@@ -57,6 +57,10 @@ final class PatientVitalsForm extends Form
 
     public string $oxygenDevice = '';
 
+    public ?int $o2 = null;
+
+    public ?int $glucose = null;
+
     public function setVital(Vital $vital): void
     {
         $this->vital = $vital;
@@ -105,6 +109,8 @@ final class PatientVitalsForm extends Form
             'painDescriptors.*' => ['string', Rule::enum(PainDescriptors::class)],
             'sp02' => ['nullable', 'integer', 'min:0', 'max:100'],
             'oxygenDevice' => ['nullable', 'string', 'exclude_if:oxygenDevice,', Rule::enum(Oxygen::class)],
+            'o2' => ['nullable', 'integer', 'min:0', 'max:100'],
+            'glucose' => ['nullable', 'integer', 'min:0', 'max:999'],
         ];
     }
 
@@ -133,6 +139,8 @@ final class PatientVitalsForm extends Form
             'pain_descriptors' => $this->painDescriptors ?: null,
             'sp02' => $this->sp02 !== 0 ? $this->sp02 : null,
             'oxygen_device' => $this->oxygenDevice ?: null,
+            'o2' => $this->o2 ?: null,
+            'glucose' => $this->glucose ?: null,
         ]);
     }
 
@@ -159,6 +167,8 @@ final class PatientVitalsForm extends Form
             'pain_descriptors' => $this->painDescriptors ?: null,
             'sp02' => $this->sp02 !== 0 ? $this->sp02 : null,
             'oxygen_device' => $this->oxygenDevice ?: null,
+            'o2' => $this->o2 ?: null,
+            'glucose' => $this->glucose ?: null,
         ]);
     }
 }

@@ -473,6 +473,50 @@
         </template>
         <td class="bg-white dark:bg-gray-950 sticky right-0 z-10 border-l border-gray-200 dark:border-gray-700" style="width: 160px; min-width: 160px; max-width: 160px;"></td>
     </tr>
+
+    <tr class="border-b border-gray-100 dark:border-gray-800">
+        <td class="py-2 px-4 font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-950 sticky left-0 z-10 shadow-[2px_0_5px_-2px_rgba(0,0,0,0.1)] dark:shadow-[2px_0_5px_-2px_rgba(0,0,0,0.3)] border-r border-gray-200 dark:border-gray-700 text-left" style="width: 256px; min-width: 256px; max-width: 256px;">O2</td>
+        @foreach($this->vitals as $vital)
+            <td class="py-2 px-2 bg-white dark:bg-gray-950 text-center border-l border-r border-gray-200 dark:border-gray-700" style="width: 160px; min-width: 160px; max-width: 160px;">
+                <span @class(['text-xs text-gray-900 dark:text-gray-100', 'line-through' => $vital->trashed()])>{{ $vital->o2 ?? '-' }}</span>
+            </td>
+        @endforeach
+        <template x-if="showNewColumn" >
+            <td class="py-2 px-2 bg-white dark:bg-gray-950 border-l border-r border-gray-200 dark:border-gray-700 text-left" style="width: 160px; min-width: 160px; max-width: 160px;">
+                <flux:input
+                    type="number"
+                    wire:model="form.o2"
+                    placeholder="0-100"
+                    min="0"
+                    max="100"
+                    size="sm"
+                />
+            </td>
+        </template>
+        <td class="bg-white dark:bg-gray-950 sticky right-0 z-10 border-l border-gray-200 dark:border-gray-700" style="width: 160px; min-width: 160px; max-width: 160px;"></td>
+    </tr>
+
+    <tr class="border-b border-gray-100 dark:border-gray-800">
+        <td class="py-2 px-4 font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-950 sticky left-0 z-10 shadow-[2px_0_5px_-2px_rgba(0,0,0,0.1)] dark:shadow-[2px_0_5px_-2px_rgba(0,0,0,0.3)] border-r border-gray-200 dark:border-gray-700 text-left" style="width: 256px; min-width: 256px; max-width: 256px;">Glucose</td>
+        @foreach($this->vitals as $vital)
+            <td class="py-2 px-2 bg-white dark:bg-gray-950 text-center border-l border-r border-gray-200 dark:border-gray-700" style="width: 160px; min-width: 160px; max-width: 160px;">
+                <span @class(['text-xs text-gray-900 dark:text-gray-100', 'line-through' => $vital->trashed()])>{{ $vital->glucose ?? '-' }}</span>
+            </td>
+        @endforeach
+        <template x-if="showNewColumn" >
+            <td class="py-2 px-2 bg-white dark:bg-gray-950 border-l border-r border-gray-200 dark:border-gray-700 text-left" style="width: 160px; min-width: 160px; max-width: 160px;">
+                <flux:input
+                    type="number"
+                    wire:model="form.glucose"
+                    placeholder="0-999"
+                    min="0"
+                    max="999"
+                    size="sm"
+                />
+            </td>
+        </template>
+        <td class="bg-white dark:bg-gray-950 sticky right-0 z-10 border-l border-gray-200 dark:border-gray-700" style="width: 160px; min-width: 160px; max-width: 160px;"></td>
+    </tr>
     </tbody>
 </table>
 </div>
