@@ -7,6 +7,7 @@
             <flux:table.columns>
                 <flux:table.column sticky sortable :sorted="$sortBy === 'name'" :direction="$sortDirection" wire:click="sort('name')" class="bg-white">Name</flux:table.column>
                 <flux:table.column>Gender</flux:table.column>
+                <flux:table.column>Age</flux:table.column>
                 <flux:table.column>Birthdate</flux:table.column>
                 <flux:table.column>MRN</flux:table.column>
                 <flux:table.column>Room</flux:table.column>
@@ -31,6 +32,7 @@
                             </a>
                         </flux:table.cell>
                         <flux:table.cell>{{ $patient->gender }}</flux:table.cell>
+                        <flux:table.cell>{{ \Carbon\Carbon::parse($patient->birth_date)->age }}</flux:table.cell>
                         <flux:table.cell>{{ $patient->birth_date->format('m/d/Y') }}</flux:table.cell>
                         <flux:table.cell>{{ $patient->mrn }}</flux:table.cell>
                         <flux:table.cell>{{ $patient->room }}</flux:table.cell>
