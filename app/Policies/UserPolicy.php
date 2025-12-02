@@ -20,4 +20,9 @@ final class UserPolicy
     {
         return $student->isStudent() && $student->teacher_id === $user->id;
     }
+
+    public function viewStudent(User $user, User $student): bool
+    {
+        return $student->isStudent() && $student->teacher_id === $user->id;
+    }
 }
