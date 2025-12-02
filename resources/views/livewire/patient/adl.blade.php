@@ -238,15 +238,6 @@ $hasOtherSelected = function($field, $adls, $formField = null) {
         'borderClass' => 'border-b'
     ])
 
-    {{-- Level of Transfer Assist --}}
-    @include('livewire.patient.adl-partials.multi-select-field', [
-        'field' => 'level_of_transfer_assist',
-        'formField' => 'levelOfTransferAssist',
-        'label' => 'Level of Transfer Assist',
-        'enum' => \App\Enums\LevelOfTransfer::class,
-        'borderClass' => 'border-b'
-    ])
-
     {{-- Assistive Device --}}
     @include('livewire.patient.adl-partials.multi-select-field', [
         'field' => 'assistive_device',
