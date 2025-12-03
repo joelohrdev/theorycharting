@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="dark" style="scrollbar-gutter: stable;">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" style="scrollbar-gutter: stable;">
     <head>
         @include('partials.head')
     </head>
@@ -27,8 +27,6 @@
             </flux:navbar>
 
             <flux:spacer />
-
-            <flux:button x-data x-on:click="$flux.dark = ! $flux.dark" icon="moon" variant="subtle" aria-label="Toggle dark mode" />
 
             <!-- Desktop User Menu -->
             <flux:dropdown position="top" align="end">
