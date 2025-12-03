@@ -26,6 +26,13 @@ final class Accept extends Component
 
     public string $password_confirmation = '';
 
+    public function mount()
+    {
+        if ($this->invitation->accepted_at) {
+            $this->redirect(route('dashboard'), navigate: true);
+        }
+    }
+
     public function acceptInvitation(): void
     {
         $this->validate();
