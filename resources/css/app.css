@@ -53,6 +53,19 @@ select:focus[data-flux-control] {
     @apply outline-hidden ring-2 ring-accent ring-offset-2 ring-offset-accent-foreground;
 }
 
+@keyframes heartbeat {
+    0% { transform: scale(1); opacity: 1; }
+    15% { transform: scale(1.15); opacity: 0.9; }
+    30% { transform: scale(1); opacity: 1; }
+    45% { transform: scale(1.15); opacity: 0.9; }
+    60% { transform: scale(1); opacity: 1; }
+    100% { transform: scale(1); opacity: 1; }
+}
+.animate-heartbeat {
+    animation: heartbeat 3s ease-in-out infinite;
+    transform-origin: center;
+}
+
 /* \[:where(&)\]:size-4 {
     @apply size-4;
 } */
