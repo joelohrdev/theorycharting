@@ -10,6 +10,5 @@
     </div>
     <div class="flex items-center justify-between">
     </div>
-    <flux:separator class="mb-4" />
     <livewire:patient.index />
 </x-layouts.app>
